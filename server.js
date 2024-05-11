@@ -39,7 +39,8 @@ app.use(function (_req, res, next) {
 //     "auth": "",
 //     "title": "",
 //     "body": "",
-//     "icon": ""
+//     "icon": "",
+//     "badgeCount": 0
 // }
 // ```
 app.post("/send", async (req, res) => {
@@ -57,7 +58,10 @@ app.post("/send", async (req, res) => {
         notification: {
             title: webPushData.title,
             body: webPushData.body,
-            icon: webPushData.icon
+            icon: webPushData.icon,
+            data: {
+                badgeCount: webPushData.badgeCount ?? 0
+            }
         }
     };
 
