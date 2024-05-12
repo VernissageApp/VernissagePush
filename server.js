@@ -50,7 +50,7 @@ app.post("/send", async (req, res) => {
   
     // Verify credentials
     if (req.headers.authorization !== secureKeyValue) {
-        return res.status(401).send('Authentication required.') // Access denied.  
+        return res.status(401).send('Authentication required.'); // Access denied.  
     } 
 
     // Create payload
@@ -93,10 +93,19 @@ app.post("/send", async (req, res) => {
 
     // Send new WebPush.
     const sendResult = await push.send(subscription, payload);
-
     console.log(sendResult);
-    res.send(sendResult);
-    res.status(201).end();
+
+    // Return status code (failedDependency) when response is not correct.
+    if (sendResult?.length > 0) {
+        if (sendResult[0].success) {
+            res.status(201).send(sendResult).end();
+        } else {
+            console.log('Sending 424 status code.');
+            res.status(424).send(sendResult).end();
+        }
+    } else {
+        res.status(201).send(sendResult).end();
+    }    
 });
 
 app.get("/", async (_req, res) => {
