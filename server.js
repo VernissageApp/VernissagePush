@@ -108,6 +108,11 @@ app.post("/send", async (req, res) => {
     }    
 });
 
+app.get("/send", async (_req, res) => {
+    res.send("Server is up and running...");
+    res.status(200).end();
+});
+
 app.get("/", async (_req, res) => {
     res.send("Server is up and running...");
     res.status(200).end();
